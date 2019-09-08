@@ -8,6 +8,8 @@ A simple and primitive forum I developed to learn back end development with Djan
   - Sign in and Sign up
   - Starting threads
   - Posting, editing and deleting posts
+  - Uses templates to decrease code duplication.
+  - Uses Bootstrap for styling.
   
 ## Screenshots
 <p align="center">
