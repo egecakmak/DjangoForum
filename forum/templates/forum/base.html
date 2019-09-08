@@ -1,0 +1,180 @@
+{% load static %}
+{% load glpun %}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% block title %}
+    {% endblock %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+        #popover-menu-signedin, #popover-menu-guest {
+            margin-left: 5px;
+        }
+
+        .bg-ege {
+            background-color: #00e3ef;
+        }
+
+        .container {
+            padding: 5px;
+        }
+
+        .form-control {
+            width: 300px;
+        }
+
+        .popover {
+            max-width: 100%;
+        }
+
+        #popover-content-logout > * {
+            background-color: #ff0000 !important;
+        }
+
+        .selector-for-some-widget {
+            box-sizing: content-box;
+        }
+
+        /* Sticky footer styles
+        -------------------------------------------------- */
+        {#html body{#}
+        {#    background-color: #027B93;#}
+        {
+        #}#}
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 60px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            /* Set the fixed height of the footer here */
+            height: 60px;
+            line-height: 60px; /* Vertically center the text there */
+            background-color: #f5f5f5;
+        }
+
+        /* Custom page CSS
+        -------------------------------------------------- */
+        /* Not required for template or sticky footer method. */
+
+        body > .container {
+            padding: 60px 15px 0;
+        }
+
+        .footer > .container {
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        code {
+            font-size: 80%;
+        }
+    </style>
+</head>
+<header>
+    <nav class="navbar navbar-expand-md" style="background-color: black;">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+            <ul class="navbar-nav mr-auto">
+                {% block tracker %}
+                {% endblock %}
+            </ul>
+        </div>
+        <div class="mx-auto order-0">
+            <a class="navbar-brand mx-auto text-white" href="/forum">Django Forum</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <button id="popover-menu-signedin" type="button" data-container="body"
+                                data-toggle="popover"
+                                data-placement="bottom" style="display: inline-block; background: none; border: none;">
+                            <img border="0" alt="Profile" src="{% static "forum/icons/profile.png" %}" width="40"
+                                 height="40">
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/forum/search">
+                            <img border="0" alt="Search" src="{% static "forum/icons/search.png" %}" width="40"
+                                 height="40">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/forum/messages">
+                            <img border="0" alt="Messages" src="{% static "forum/icons/messages.png" %}" width="40"
+                                 height="40">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/forum/settings">
+                            <img border="0" alt="Settings" src="{% static "forum/icons/settings.png" %}" width="40"
+                                 height="40">
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <div id="login-form" style="display: none">
+                            <form action="{% url 'forum:signin' %}" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="uname">Username</label>
+                                    <input type="text" placeholder="Enter Username" name="uname" class="form-control"
+                                           required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="psw">Password</label>
+                                    <input type="password" placeholder="Enter Password" name="psw" class="form-control"
+                                           required>
+                                </div>
+                                <div class="button-box col-lg-12" style="text-align: center; margin-top: 20px;">
+                                    <button class="btn btn-primary" type="submit">Login</button>
+                                    <a href="/forum/signup" class="btn btn-primary"> Signup</a>
+                                </div>
+                            </form>
+                        </div>
+                        <button id="popover-menu-guest" type="button" data-container="body"
+                                data-toggle="popover"
+                                data-placement="bottom" style="display: inline-block; background: none; border: none;">
+                            <img border="0" alt="Profile" src="{% static "forum/icons/profile.png" %}" width="40"
+                                 height="40">
+                        </button>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<body class="bg-light">
+{% block content %}
+{% endblock %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+<script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/holder.min.js"></script>
+<script src="{% static "forum/js/forumScripts.js" %}"></script>
+</body>
+
+</html>

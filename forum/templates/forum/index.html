@@ -1,0 +1,45 @@
+{% extends 'forum/base.html' %}
+{% load static %}
+{% load glpun %}
+{% block title %}
+    <title>Django Forum</title>
+{% endblock %}
+{% block tracker %}
+    <li class="nav-item text-white"><a href="/forum">Home</a></li>
+{% endblock %}
+{% block content %}
+    {% if login_message %}
+        <div class="alert alert-danger alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Login Failed</strong> {{ login_message }}
+        </div>
+    {% endif %}
+    {#    <div class="container">#}
+    <main role="main" class="mx-auto">
+        <div class="my-3 p-3 bg-white rounded box-shadow">
+        <div class="border-bottom border-gray">
+            <h6 class="d-inline pb-2 mb-0">Threads</h6>
+            <small class="d-inline float-right">
+                <a href="/forum/startThread">Start a New Thread</a>
+            </small>
+        </div>
+        <div class="mt-1 mb-2">
+            {% if threads_list %}
+                {% for thread in threads_list %}
+                    <div class="media border-bottom border-gray pb-2 mb-0">
+                        <div class="media-body">
+                            <div class="d-inline">
+                                <h6 class="mt-0"><a href="{% url 'forum:thread' thread.id %}">{{ thread.title }}</a>
+                                </h6>
+                            </div>
+                            <div>Started by {{ thread.owner.username }} , {{ thread.pub_date }}</div>
+                            <div>Last post: {% get_last_posts_users_name thread %} , {{ thread.update_date }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        </div>
+    </main>
+    {#    </div>#}
+{% endblock %}

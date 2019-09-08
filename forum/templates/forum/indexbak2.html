@@ -1,0 +1,241 @@
+{% load static %}
+{% load glpun %}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Django Forum</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="offcanvas.css" rel="stylesheet">
+    <style>
+        #popover-menu-signedin, #popover-menu-guest {
+            margin-left: 5px;
+        }
+
+        .bg-ege {
+            background-color: #00e3ef;
+        }
+
+        .container {
+            padding: 5px;
+        }
+
+        .form-control {
+            width: 300px;
+        }
+
+        .popover {
+            max-width: 100%;
+        }
+
+        #popover-content-logout > * {
+            background-color: #ff0000 !important;
+        }
+
+        .selector-for-some-widget {
+            box-sizing: content-box;
+        }
+
+        /* Sticky footer styles
+        -------------------------------------------------- */
+        {#html body{#}
+        {#    background-color: #027B93;#}
+        {
+        #}#}
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 60px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            /* Set the fixed height of the footer here */
+            height: 60px;
+            line-height: 60px; /* Vertically center the text there */
+            background-color: #f5f5f5;
+        }
+
+        /* Custom page CSS
+        -------------------------------------------------- */
+        /* Not required for template or sticky footer method. */
+
+        body > .container {
+            padding: 60px 15px 0;
+        }
+
+        .footer > .container {
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        code {
+            font-size: 80%;
+        }
+    </style>
+</head>
+
+<header>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+        <a class="navbar-brand" href="/forum">Django Forum</a>
+        <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Dashboard <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Notifications</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Switch account</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown01"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+            {% if username %}
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <button id="popover-menu-signedin" type="button" class="btn btn-secondary" data-container="body"
+                        data-toggle="popover"
+                        data-placement="bottom">
+                    Welcome {{ username }}</button>
+            {% else %}
+                <div id="login-form" style="display: none">
+                    <form action="{% url 'forum:signin' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="uname">Username</label>
+                            <input type="text" placeholder="Enter Username" name="uname" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="psw">Password</label>
+                            <input type="password" placeholder="Enter Password" name="psw" class="form-control"
+                                   required>
+                        </div>
+                        <div class="button-box col-lg-12" style="text-align: center; margin-top: 20px;">
+                            <button class="btn btn-primary" type="submit">Login</button>
+                            <a href="/forum/signup" class="btn btn-primary"> Signup</a>
+                        </div>
+                    </form>
+                </div>
+                <button id="popover-menu-guest" type="button" class="btn btn-secondary" data-container="body"
+                        data-toggle="popover"
+                        data-placement="bottom">
+                    Login 🔒
+                </button>
+            {% endif %}
+        </div>
+    </nav>
+</header>
+<body class="bg-light">
+<main role="main" class="container">
+    <div></div>
+
+</main>
+<div class="container">
+{#    <div class="card bg-ege">#}
+{#        <div class="card-body d-flex">#}
+{#            <img class="mr-3" src="https://getbootstrap.com/docs/4.1/assets/brand/bootstrap-outline.svg" alt=""#}
+{#                 width="48" height="48">#}
+{#            <p class="card-text">Django Forum</p>#}
+{#        </div>#}
+{#    </div>#}
+    <main role="main" class="container">
+        <div class="my-3 p-3 bg-white rounded box-shadow">
+            <h6 class="border-bottom border-gray pb-2 mb-0">Threads</h6>
+            {% if threads_list %}
+                {%  for thread in threads_list %}
+                <div class="media border-bottom border-gray pb-2 mb-0">
+                    <div class="media-body">
+                        <div class="d-inline">
+                            <h6 class="mt-0"><a href="{% url 'forum:thread' thread.id%}">{{ thread.title }}</a></h6>
+                        </div>
+                        <div>Started by {{ thread.owner.username }} , {{ thread.pub_date }}</div>
+                        <div>Last post: {% get_last_posts_users_name thread %} , {{ thread.update_date }}</div>
+                    </div>
+                </div>
+
+                {% endfor %}
+            {% endif %}
+            <small class="d-block text-right mt-3">
+                <a href="#">All updates</a>
+            </small>
+        </div>
+
+{#        <div class="my-3 p-3 bg-white rounded box-shadow">#}
+{#            <h6 class="border-bottom border-gray pb-2 mb-0">Suggestions</h6>#}
+{#            <div class="media text-muted pt-3">#}
+{#                <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">#}
+{#                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">#}
+{#                    <div class="d-flex justify-content-between align-items-center w-100">#}
+{#                        <strong class="text-gray-dark">Full Name</strong>#}
+{#                        <a href="#">Follow</a>#}
+{#                    </div>#}
+{#                    <span class="d-block">@username</span>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="media text-muted pt-3">#}
+{#                <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">#}
+{#                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">#}
+{#                    <div class="d-flex justify-content-between align-items-center w-100">#}
+{#                        <strong class="text-gray-dark">Full Name</strong>#}
+{#                        <a href="#">Follow</a>#}
+{#                    </div>#}
+{#                    <span class="d-block">@username</span>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="media text-muted pt-3">#}
+{#                <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">#}
+{#                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">#}
+{#                    <div class="d-flex justify-content-between align-items-center w-100">#}
+{#                        <strong class="text-gray-dark">Full Name</strong>#}
+{#                        <a href="#">Follow</a>#}
+{#                    </div>#}
+{#                    <span class="d-block">@username</span>#}
+{#                </div>#}
+{#            </div>#}
+{#            <small class="d-block text-right mt-3">#}
+{#                <a href="#">All suggestions</a>#}
+{#            </small>#}
+{#        </div>#}
+    </main>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+<script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/holder.min.js"></script>
+<script src="{% static "forum/js/forumScripts.js" %}"></script>
+</body>
+
+</html>

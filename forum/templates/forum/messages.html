@@ -1,0 +1,38 @@
+{% extends 'forum/base.html' %}
+{% load static %}
+{% load glpun %}
+{% block title %}
+    <title>Messages</title>
+{% endblock %}
+{% block tracker %}
+    <li class="nav-item text-white"><a href="/forum">Home</a></li>
+    <li style="color: white"> -></li>
+    <li class="nav-item text-white"><a href="/forum/messages">Messages</a></li>
+{% endblock %}
+{% block content %}
+    <main role="main" class="mx-3">
+        <div class="my-3 p-3 bg-white rounded box-shadow">
+            <h6 class="border-bottom border-gray pb-2 mb-0">Threads</h6>
+            {% if message_containers %}
+                {% for message_container in message_containers %}
+                    <div class="media border-bottom border-gray pb-2 mb-0">
+                        <div class="media-body">
+                            <div class="d-inline">
+                                <h6 class="mt-0"><a href="{% url 'forum:conversations' message_container.id %}">message</a>
+                                </h6>
+                            </div>
+                            {% if message_container.side_1 == request.user %}
+                                <div>Chat with {{ message_container.side_2.username }}</div>
+                            {% elif message_container.side_2 == request.user %}
+                                <div>Chat with {{ message_container.side_1.username }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+{#            <small class="d-block text-right mt-3">#}
+{#                <a href="#">All updates</a>#}
+{#            </small>#}
+        </div>
+    </main>
+{% endblock %}

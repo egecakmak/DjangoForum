@@ -1,0 +1,9 @@
+{% if users %}
+    <ol>
+    {% for user in users %}
+        <li>
+        {{ user.username }}
+        </li>
+    {% endfor %}
+    </ol>
+{% endif %}

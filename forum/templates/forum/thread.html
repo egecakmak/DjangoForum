@@ -1,0 +1,61 @@
+{% extends 'forum/base.html' %}
+{% load static %}
+{% load glpun %}
+{% block title %}
+    <title>{{ thread.title }}</title>
+{% endblock %}
+{% block tracker %}
+    <li class="nav-item text-white"><a href="/forum">Home</a></li>
+    <li style="color: white"> -> </li>
+    <li class="nav-item text-white"><a href="{% url 'forum:thread' thread.id %}">{{ thread.title }}</a></li>
+{% endblock %}
+{% block content %}
+    <div class="mx-3 border rounded" style="margin-top: 20px; padding: 5px; background-color: ivory">
+        {% for post in posts %}
+            <div class="container border border-gray rounded my-3">
+                <div class="container border-bottom rounded">
+                    <p>{{ post.user.username }} posted at {{ post.pub_date }} : </p> <br>
+                    <p>{{ post.post }}</p><br>
+                </div>
+                {% if request.user.is_authenticated and post.user == request.user %}
+                    <a href="{% url 'forum:delete_post' thread.id post.id %}" class="btn btn-danger mt-2">Delete
+                        Post</a>
+                    <button type="button" class="btn btn-primary mt-2" data-toggle="modal"
+                            data-target=".bd-example-modal-lg">Edit Post
+                    </button>
+
+                    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+                         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="container mx-auto" style="width: 200px;">
+                                    <form action="{% url 'forum:edit_post' thread.id post.id %}" method="post">
+                                        <div class="form-group">
+                                            {% csrf_token %}<textarea class="form-control" name="edit_text" rows="4"
+                                                                      cols="20" required
+                                                                      wrap="hard">{{ post.post }}</textarea>
+                                            <input type="submit" value="Edit post" class="btn btn-primary mt-2">
+                                        </div>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        {% if request.user.is_authenticated %}
+            <div class="mx-auto rounded" style="width: 400px; margin-top: 20px;">
+                <form action="{% url 'forum:thread' thread.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <textarea class="form-control" name="post_text" rows="4" cols="20" required
+                                  wrap="hard"></textarea>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Submit post">
+                </form>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

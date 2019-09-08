@@ -1,0 +1,38 @@
+{% load glpun %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Threads</title>
+    <style>
+td
+{
+    padding:0 15px 0 15px;
+}
+</style>
+</head>
+<body>
+{% if threads_list %}
+    <table>
+        <tr>
+            <th>Thread Title</th>
+            <th>Created at</th>
+            <th>Started By</th>
+            <th>Last Updated</th>
+            <th>Last Post By</th>
+        </tr>
+        {% for thread in threads_list %}
+            <tr>
+                <td><a href="{% url 'forum:thread' thread.id%}">{{ thread.title }}</a></td>
+                <td>{{ thread.pub_date }}</td>
+                <td>{{ thread.owner.username }}</td>
+                <td>{{ thread.update_date }}</td>
+                <td>{% get_last_posts_users_name thread %}</td>
+            </tr>
+
+        {% endfor %}
+    </table>
+{% else %}
+{% endif %}
+</body>
+</html>

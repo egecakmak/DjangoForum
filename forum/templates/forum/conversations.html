@@ -1,0 +1,16 @@
+{% extends 'forum/base.html' %}
+{% load static %}
+{% load glpun %}
+{% block title %}
+    <title>Messages</title>
+{% endblock %}
+{% block tracker %}
+    <li class="nav-item text-white"><a href="/forum">Home</a></li>
+    <li style="color: white"> -></li>
+    <li class="nav-item text-white"><a href="/forum/messages">Messages</a></li>
+{% endblock %}
+{% block content %}
+    {% for message in all_messages %}
+        Message by {{ message.message_container.side_1 }} {{ message.text }}
+    {% endfor %}
+{% endblock %}
